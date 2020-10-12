@@ -2,6 +2,7 @@ let ts = "./csvFile/test.csv";
 const csv = require('csv-parser')
 const fs = require('fs')
 const results = [];
+let mapStore = new Map();
  
 fs.createReadStream(ts)
   .pipe(csv())
@@ -34,6 +35,8 @@ fs.createReadStream(ts)
         let node = arr[i];
         let map1 = new Map();
         let score = "";
+
+        
         let map2 = getMapScore(node, map, map1,score);
         mapFinal = map2;
       }
@@ -50,6 +53,7 @@ fs.createReadStream(ts)
     });
 function getMapScore(node, map, map1,score) {
   let arr = map.get(node);
+  let map3 = new Map();
   if (!map.has(node)) {
     return map1;
   }
@@ -60,7 +64,7 @@ function getMapScore(node, map, map1,score) {
     let parent_bug = newArray[0];
     let occurence = newArray[1];
     let percentage = newArray[2];
-   
+ 
     console.log(parent_bug + " " + occurence + " " + percentage);
     let score1;
     if (occurence == 'null') {
@@ -72,16 +76,21 @@ function getMapScore(node, map, map1,score) {
       console.log(score1);
     }
     let str = parent_bug + "$" + score1 + "$" + percentage;
-    if (map1.has(parent_bug)) {
-      let val = map1.get(parent_bug);
-      map1.set(parent_bug, val + score1);
+    mapStore.forEach(function (values,keys) {
+      console.log(values + " " + keys);
+    })
+    if (mapStore.has(parent_bug)) {
+      console.log(parent_bug + " " + map1.get(parent_bug));
+      let val = mapStore.get(parent_bug);
+      mapStore.set(parent_bug, val + score1);
     }
     else {
-      map1.set(parent_bug, score1);
+      mapStore.set(parent_bug, score1);
+      console.log(parent_bug + " " + map1.get(parent_bug));
     }
-    return getMapScore(parent_bug,map,map1,score1);
+   map3= getMapScore(parent_bug,map,mapStore,score1);
   }
-
+  return map3;
   }
   console.log("results are"+results);
 
