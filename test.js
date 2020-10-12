@@ -76,9 +76,7 @@ function getMapScore(node, map, map1,score) {
       console.log(score1);
     }
     let str = parent_bug + "$" + score1 + "$" + percentage;
-    mapStore.forEach(function (values,keys) {
-      console.log(values + " " + keys);
-    })
+   
     if (mapStore.has(parent_bug)) {
       console.log(parent_bug + " " + map1.get(parent_bug));
       let val = mapStore.get(parent_bug);
@@ -88,6 +86,9 @@ function getMapScore(node, map, map1,score) {
       mapStore.set(parent_bug, score1);
       console.log(parent_bug + " " + map1.get(parent_bug));
     }
+    mapStore.forEach(function (values,keys) {
+      console.log(values + " " + keys);
+    })
    map3= getMapScore(parent_bug,map,mapStore,score1);
   }
   return map3;
